@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".CreditsActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Credits:\n"
+        android:textAlignment="center"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_mal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MyAnimeList Database (for images)"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/im_mal"
+        android:layout_width="wrap_content"
+        android:layout_height="98dp"
+        app:srcCompat="@drawable/mal" />
+
+    <TextView
+        android:id="@+id/txt_jikan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\nWith the Jikan REST API\n "
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_opentrivia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The Open Trivia Database (for questions)"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/im_opentrivia"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/trivia" />
+
+    <TextView
+        android:id="@+id/txt_loadingio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\nLoading.io for the loading animations"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/im_loadingio"
+        android:layout_width="match_parent"
+        android:layout_height="148dp"
+        app:srcCompat="@drawable/loadingio_render" />
+
+    <TextView
+        android:id="@+id/txt_overlordppp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Overlord : Ple Ple Pleiades (for the results gifs)"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/im_overlordppp"
+        android:layout_width="411dp"
+        android:layout_height="175dp"
+        app:srcCompat="@drawable/overlord_ple_ple_pleiades" />
+
+    <TextView
+        android:id="@+id/txt_sourcecode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\n\nSource code soon available on Github"
+        android:textStyle="bold" />
+
+</LinearLayout>
+
+    </ScrollView>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Question:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Question:" />
+
+    <EditText
+        android:id="@+id/txt_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="sans-serif-condensed"
+        android:hint="Enter your custom question here"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Right Answer:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Right Answer:" />
+
+    <EditText
+        android:id="@+id/txt_rightanswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Write the right answer"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="False Answer 1:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="False Answer 1:" />
+
+    <EditText
+        android:id="@+id/txt_falseanswer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Write a false answer"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="False Answer 2:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="False Answer 2:" />
+
+    <Button
+        android:id="@+id/btn_prop3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add proposition 3"
+        tools:text="Add proposition 3" />
+
+    <EditText
+        android:id="@+id/txt_falseanswer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="Write a false answer"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="False Answer 3:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="False Answer 3:" />
+
+    <Button
+        android:id="@+id/btn_prop4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add proposition 4"
+        tools:text="Add proposition 4" />
+
+    <EditText
+        android:id="@+id/txt_falseanswer3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="Write a false answer"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Image url:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Image url:" />
+
+    <Button
+        android:id="@+id/btn_imageurl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add image url"
+        tools:text="Add image url" />
+
+    <EditText
+        android:id="@+id/txt_imageurl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="url of the image displayed with the answer"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Subject:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Subject:" />
+
+    <Button
+        android:id="@+id/btn_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add a subject"
+        tools:text="Add a subject" />
+
+    <EditText
+        android:id="@+id/txt_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="Subject of your question (anime title, character...)"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Subject type:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Subject type:" />
+
+    <Button
+        android:id="@+id/btn_maltype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add subject type"
+        tools:text="Add subject type" />
+
+    <Spinner
+        android:id="@+id/spn_maltype"
+        android:layout_width="match_parent"
+        android:enabled="false"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Subject id:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Subject id:" />
+
+    <Button
+        android:id="@+id/btn_malid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add MyAnimeList id"
+        tools:text="Add MAL id" />
+
+    <EditText
+        android:id="@+id/txt_malid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="Write the mal id of the subject (anime/character...)"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btn_submitquestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add this new question !" />
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete this question"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btn_backcustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Return" />
+
+</LinearLayout>
+
+    </ScrollView>
+

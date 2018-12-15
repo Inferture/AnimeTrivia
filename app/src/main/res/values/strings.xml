@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AnimeQuizz</string>
+    <string name="title_activity_duo_results">DuoResultsActivity</string>
+
+    <string name="questions_number">numquestions</string>
+
+    <string-array name="mal_types">
+        <item>Anime</item>
+        <item>Manga/Novel</item>
+        <item>Character</item>
+    </string-array>
+</resources>
+
+
