@@ -1,15 +1,20 @@
 package com.example.q.animequizz;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.provider.BaseColumns;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,12 +22,15 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 public class AddCustomActivity extends AppCompatActivity {
-
+/*Activity used to make/modify/delete custom questions*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom);
 
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
+        int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
+        setTheme(theme);
+        setContentView(R.layout.activity_custom);
 
         Bundle extras = getIntent().getExtras();
         long idget=-1;
@@ -37,7 +45,7 @@ public class AddCustomActivity extends AppCompatActivity {
         final SQLiteDatabase db = qdh.getWritableDatabase();
 
 
-        String[] types = new String[]{"Anime","Manga/Novel","Character"} ;
+        String[] types = new String[]{"Anime","Manga/Novel","Character"} ;//Not used as the strings are in the Resources
         final Spinner spn_maltype = (Spinner) findViewById(R.id.spn_maltype);
     // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,

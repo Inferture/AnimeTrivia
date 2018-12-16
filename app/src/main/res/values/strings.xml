@@ -3,6 +3,7 @@
     <string name="title_activity_duo_results">DuoResultsActivity</string>
 
     <string name="questions_number">numquestions</string>
+    <string name="theme">theme</string>
 
     <string-array name="mal_types">
         <item>Anime</item>

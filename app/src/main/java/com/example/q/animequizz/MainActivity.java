@@ -1,26 +1,38 @@
 package com.example.q.animequizz;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.hardware.SensorEventListener;
 import android.provider.BaseColumns;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AndroidException;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+    /*Activity opened at the start, shows the various options*/
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
+        int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
+        setTheme(theme);
+
         setContentView(R.layout.activity_menu);
 
 
@@ -34,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent party = new Intent(getApplicationContext(), SoloQuestionActivity.class);
                 Intent party = new Intent(getApplicationContext(), ChoixModeActivity.class);
                 startActivity(party);
             }
@@ -44,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         playcustom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent party = new Intent(getApplicationContext(), SoloQuestionActivity.class);
                 Intent party = new Intent(getApplicationContext(), ChoixModeActivity.class);
                 party.putExtra("custom", true);
 
@@ -85,8 +95,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent party = new Intent(getApplicationContext(), CustomListActivity.class);//real one
-                //Intent party = new Intent(getApplicationContext(), AddCustomActivity.class);
+                Intent party = new Intent(getApplicationContext(), CustomListActivity.class);
                 startActivity(party);
             }
         });
@@ -106,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(party);
             }
         });
+
     }
 
 

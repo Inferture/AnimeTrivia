@@ -7,14 +7,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 public class QuestionDbHelper extends SQLiteOpenHelper {
-
+/*Helper to make it easier to do operations on the database (add/change/delete entry, create a table...)*/
     private static final String SQL_CREATE_ENTRIES = AnimeContract.SQL_CREATE_ENTRIES;
 
 
     private static final String SQL_DELETE_ENTRIES =AnimeContract.SQL_DELETE_ENTRIES;
 
-    // If you change the database schema, you must increment the database versio
-    // n.
+    // If you change the database schema, you must increment the database version.
+
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "AnimeQuizz.db";
 

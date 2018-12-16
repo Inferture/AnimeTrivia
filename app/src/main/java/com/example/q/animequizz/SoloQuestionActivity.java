@@ -17,7 +17,7 @@ import java.util.List;
 import pl.droidsonroids.gif.GifImageView;
 
 public class SoloQuestionActivity extends AppCompatActivity {
-
+    /*Activity that shows the questions in the solo mode*/
 
     String realAnswer="D.D.D.";
 
@@ -39,6 +39,10 @@ public class SoloQuestionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
+
+
+        int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
+        setTheme(theme);
 
         maxQuestion = sharedPref.getInt(getString(R.string.questions_number), 10);
 

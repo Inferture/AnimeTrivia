@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class QuestionSearch extends AsyncTask<String, String, JSONObject> {
-
+    /*Searches asynchronously for questions  in the normal mode (with questions from the online Open Trivia Database accessed to with a json API)*/
 
     SoloQuestionActivity act;
 

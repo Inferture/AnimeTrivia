@@ -3,7 +3,7 @@ import android.provider.BaseColumns;
 
 
 public class AnimeContract {
-
+    /*To make SQL queries easier to make*/
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + QuestionEntry.TABLE_NAME + " (" +
                     QuestionEntry._ID + " INTEGER PRIMARY KEY," +

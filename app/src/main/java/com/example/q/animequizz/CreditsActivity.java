@@ -1,20 +1,28 @@
 package com.example.q.animequizz;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.net.URL;
 
 public class CreditsActivity extends AppCompatActivity {
-
+    /*Activity to credit resources used etc...*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
+        int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
+        setTheme(theme);
+
         setContentView(R.layout.activity_credits);
 
         ImageView im_mal = findViewById(R.id.im_mal);
@@ -33,6 +41,8 @@ public class CreditsActivity extends AppCompatActivity {
 
 
         TextView txt_sourcecode = findViewById(R.id.txt_sourcecode);
+
+        Button btn_title = findViewById(R.id.btn_ctitle);
 
 
         im_mal.setOnClickListener(new View.OnClickListener() {
@@ -128,12 +138,20 @@ public class CreditsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Browser  https://myanimelist.net/
-                Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/"));
+                Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Inferture/AnimeQuizz/tree/efbcfc3dbaf55321c4dec7e680a87d83ae5c994a/"));
                 startActivity(checkMAL);
 
             }
         });
 
+        btn_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Browser  https://myanimelist.net/
+                Intent party = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(party);
 
+            }
+        });
     }
 }

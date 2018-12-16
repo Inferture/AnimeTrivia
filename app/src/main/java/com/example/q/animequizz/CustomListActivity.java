@@ -1,6 +1,8 @@
 package com.example.q.animequizz;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
@@ -19,10 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomListActivity extends AppCompatActivity {
-
+    /*Shows all the questions of the database and allows you to either create a new one or choose to modify an existing one */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
+        int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
+        setTheme(theme);
 
         final Map<Integer, Integer> correspondance = new HashMap<Integer, Integer>(); //correspondance entre id dans la bdd et id dans le listview
 

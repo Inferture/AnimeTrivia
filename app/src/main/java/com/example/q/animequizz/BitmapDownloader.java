@@ -23,14 +23,32 @@ import java.util.List;
 
 
 public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
+/*To load an image asynchronously into an answer activity*/
 
-
-    //BitmapAdapter adapter = new BitmapAdapter(list.getContext());
 
 
     SoloAnswerActivity act;
     DuoAnswerActivity actDuo;
     int mode=0;
+    int mediatype=-1;
+    int malid=-1;
+
+    public BitmapDownloader(SoloAnswerActivity act, int type, int malid)
+    {
+        this.act=act;
+        mode=0;
+        mediatype=type;
+        this.malid=malid;
+    }
+
+    public BitmapDownloader(DuoAnswerActivity act, int type, int malid)
+    {
+        this.actDuo=act;
+        mode=1;
+        mediatype=type;
+        this.malid=malid;
+    }
+
 
     public BitmapDownloader(SoloAnswerActivity act)
     {
@@ -71,7 +89,6 @@ public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
             {
                 Log.i("Anime", "Pomme1: Error when getting stream "+ e.toString());
             }
-            //InputStream stream = new BufferedInputStream(conn.getInputStream());
 
             publishProgress("Trying decode stream");
             Log.i("Anime", "Pomme1: Trying to decode stream "+urlmedia);
@@ -111,14 +128,29 @@ public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
 
         super.onPostExecute(bitmap);
 
-        if(mode==0)
+        if(mediatype>=0 && malid>=0)
         {
-            act.LoadImage(bitmap);
+            if(mode==0)
+            {
+                act.LoadImage(bitmap, mediatype,malid);
+            }
+            else if(mode==1)
+            {
+                actDuo.LoadImage(bitmap, mediatype,malid);
+            }
         }
-        else if(mode==1)
+        else
         {
-            actDuo.LoadImage(bitmap);
+            if(mode==0)
+            {
+                act.LoadImage(bitmap);
+            }
+            else if(mode==1)
+            {
+                actDuo.LoadImage(bitmap);
+            }
         }
+
 
     }
 

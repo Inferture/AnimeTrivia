@@ -22,11 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
+    /*Look for an image asynchronously and loads this image into an answer activity, for the custom mode (using the database questions)*/
+
 
     SoloAnswerActivity act;
     DuoAnswerActivity actDuo;
     public QuestionDbHelper qdh;
     int mode=0;
+
+    int resmalid=-1;
+    int restype=-1;
 
     public CustomImageSearch(SoloAnswerActivity act)
     {
@@ -101,13 +106,19 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
         Bitmap bm=null;
 
+
+
         if(imageurl != null && !imageurl.equals("") )
         {
-            //imageurl=imageurl.replace("http://","https://");
             bm=GetImage(imageurl);
         }
         if(bm!=null)
         {
+            if(malid >0 && type >=1 && type<=3)
+            {
+                resmalid=malid;
+                restype=type;
+            }
             return bm;
         }
 
@@ -170,6 +181,8 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
             bm=GetImage(imageurl);
             if(bm!=null)
             {
+                resmalid=malid;
+                restype=type;
                 return bm;
             }
 
@@ -190,16 +203,19 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         {
             String l;
 
-            if(type==2)
+            if(type==3)
             {
+                restype=type;
                 l=("https://api.jikan.moe/search/character?q=" + subject + "&limit=2");
             }
-            else if(type==3)
+            else if(type==2)
             {
+                restype=type;
                 l=("https://api.jikan.moe/search/manga?q=" + subject + "&limit=2");
             }
             else
             {
+                restype=1;
                 l=("https://api.jikan.moe/search/anime?q=" + subject + "&limit=2");
             }
             urls=new String[]{l};
@@ -220,7 +236,7 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                     String jsonAnswer="";
                     try
                     {
-                        if(i%2==0)
+                        if(i%2==0 && type != 3)
                         {
                             publishProgress("trying to read stream");
                             InputStream in = new BufferedInputStream(conn.getInputStream());
@@ -248,6 +264,18 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                                     bm=SetImage( (JSONObject[])jsonList.toArray(new JSONObject[jsonList.size()]));
                                     if(bm!=null)
                                     {
+
+                                        try
+                                        {
+                                            resmalid= json.getJSONArray("result").getJSONObject(0).getInt("mal_id");
+                                            restype=1;
+                                        }
+                                        catch(Exception e)
+                                        {
+
+                                        }
+
+
                                         return bm;
                                     }
                                 }
@@ -263,6 +291,15 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                                         bm=SetImage( (JSONObject[])jsonList.toArray(new JSONObject[jsonList.size()]));
                                         if(bm!=null)
                                         {
+                                            try
+                                            {
+                                                resmalid= json.getJSONArray("result").getJSONObject(1).getInt("mal_id");
+                                                restype=1;
+                                            }
+                                            catch(Exception e)
+                                            {
+
+                                            }
                                             return bm;
                                         }
                                     }
@@ -277,6 +314,15 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                                         bm=SetImage( (JSONObject[])jsonList.toArray(new JSONObject[jsonList.size()]));
                                         if(bm!=null)
                                         {
+                                            try
+                                            {
+                                                resmalid= json.getJSONArray("result").getJSONObject(2).getInt("mal_id");
+                                                restype=1;
+                                            }
+                                            catch(Exception e)
+                                            {
+
+                                            }
                                             return bm;
                                         }
                                     }
@@ -309,6 +355,37 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
 
                             URL newURL;
+                            if(type==3)
+                            {
+                                String url_image="";
+                                try
+                                {
+                                    Log.i("AnimeQuizz", "AnimeStuff:Elected object: " + character.toString());
+                                    url_image=character.getString("image_url");
+                                }
+                                catch(Exception e)
+                                {
+
+                                }
+
+                                bm = GetImage(url_image);
+
+                                if(bm != null)
+                                {
+                                    try
+                                    {
+                                        restype=3;
+                                        resmalid=character.getInt("mal_id");
+                                    }
+                                    catch(Exception e)
+                                    {
+
+                                    }
+                                    return bm;
+
+                                }
+
+                            }
                             if(character.getJSONArray("anime").length()>0)
                             {
                                 JSONObject anime = character.getJSONArray("anime").getJSONObject(0);
@@ -381,6 +458,22 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
     }
 
 
+    protected Bitmap SetImageCharacter(JSONObject json){
+        String url_image="";
+        try
+        {
+            Log.i("AnimeQuizz", "AnimeStuff:Elected object: " + json.toString());
+            url_image=json.getString("image_url");
+        }
+        catch(Exception e)
+        {
+            url_image="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/emojidex/112/shrug_1f937.png";
+        }
+
+        Bitmap bm = GetImage(url_image);
+        return bm;
+    }
+
     protected Bitmap SetImage(JSONObject[] jsons) {
 
         JSONObject selectedObject = null;
@@ -412,10 +505,14 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
 
         String url_image="";
+        String str_type="";
         try
         {
             Log.i("AnimeQuizz", "AnimeStuff:Elected object: " + selectedObject.toString());
             url_image=selectedObject.getString("image_url");
+            resmalid=selectedObject.getInt("mal_id");
+            str_type=selectedObject.getString("type");
+
         }
         catch(Exception e)
         {
@@ -423,17 +520,16 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         }
 
 
-        /*BitmapDownloader bd;
-        if(mode==0)
+        int typeid=-1;
+        if(str_type.equals("TV") || str_type.equals("OVA") ||str_type.equals("ONA") ||str_type.equals("Special") ||str_type.equals("Movie") ||str_type.equals("Music"))
         {
-            bd = new BitmapDownloader(act);
-            bd.execute(url_image);
+            restype=1;
         }
-        else if(mode==1)
+        else if(str_type.equals("Manga") || str_type.equals("Novel") ||str_type.equals("One-shot") ||str_type.equals("Doujinshi") ||str_type.equals("Manhua") ||str_type.equals("OEL")||str_type.equals("Manhwa"))
         {
-            bd = new BitmapDownloader(actDuo);
-            bd.execute(url_image);
-        }*/
+            restype=2;
+        }
+
 
         Bitmap bm = GetImage(url_image);
         return bm;
@@ -448,14 +544,31 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
     protected void onPostExecute(Bitmap bm) {
         super.onPostExecute(bm);
 
-        if(mode==0)
+        Log.i("AnimeQuizz", "AnimeStuff:Elected object: TYPE: " +restype + " MAL ID: " +resmalid);
+
+        if(restype>0 && resmalid>0)
         {
-            act.LoadImage(bm);
+            if(mode==0)
+            {
+                act.LoadImage(bm,restype,resmalid);
+            }
+            else if(mode==1)
+            {
+                actDuo.LoadImage(bm,restype,resmalid);
+            }
         }
-        else if(mode==1)
+        else
         {
-            actDuo.LoadImage(bm);
+            if(mode==0)
+            {
+                act.LoadImage(bm,restype,resmalid);
+            }
+            else if(mode==1)
+            {
+                actDuo.LoadImage(bm,restype,resmalid);
+            }
         }
+
     }
 
     String readStream(InputStream stream) throws IOException
@@ -516,13 +629,6 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         String s0 = q.replace("\"","");
 
         String[] words = s0.split(" ");
-
-        /*Log.i("AnimeQuizz", "AnimeStuff: All words: ");
-        for(String s:words)
-        {
-            Log.i("AnimeQuizz", "AnimeStuff: " + s);
-        }*/
-
 
         String[] notCounted = new String[]{"The","In","What","Who","How", "Which"};
 

@@ -18,7 +18,7 @@ import java.util.List;
 import pl.droidsonroids.gif.GifImageView;
 
 public class DuoQuestionActivity extends AppCompatActivity {
-
+    /*Activity that shows the questions in the split screen duo mode*/
 
     String realAnswer="D.D.D.";
 
@@ -59,7 +59,8 @@ public class DuoQuestionActivity extends AppCompatActivity {
 
         maxQuestion = sharedPref.getInt(getString(R.string.questions_number), 10);
 
-
+        int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
+        setTheme(theme);
         Bundle extras = getIntent().getExtras();
         if(extras!=null)
         {
@@ -81,6 +82,10 @@ public class DuoQuestionActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
+
+
+
+
         setContentView(R.layout.activity_question_duo);
 
         loadingJ1 = findViewById(R.id.im_loadingj1);
@@ -392,7 +397,6 @@ public class DuoQuestionActivity extends AppCompatActivity {
                 }
 
 
-                //LoadQuestion("a","n","b","b","j");
             }
             catch(Exception e)
             {

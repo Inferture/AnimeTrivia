@@ -1,6 +1,8 @@
 package com.example.q.animequizz;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,7 +16,7 @@ import android.widget.TextView;
 import pl.droidsonroids.gif.GifImageView;
 
 public class SoloResultsActivity extends AppCompatActivity {
-
+    /*Activity that shows the results (how many good answer out of how many questions + gifs...) in the solo mode*/
 
 
     GifImageView gif;
@@ -25,6 +27,11 @@ public class SoloResultsActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
+        int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
+        setTheme(theme);
+
         setContentView(R.layout.activity_results_solo);
 
         Bundle extras = getIntent().getExtras();

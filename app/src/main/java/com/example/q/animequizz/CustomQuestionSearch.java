@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.util.Random;
 
 public class CustomQuestionSearch extends AsyncTask<String, String, Cursor> {
-
+/*Searches for a question in the database (custom questions created by the user)*/
 
 
 
@@ -49,15 +49,6 @@ public class CustomQuestionSearch extends AsyncTask<String, String, Cursor> {
         Cursor cursor=null;
         try
         {
-            /*cursor = db.query(
-                    AnimeContract.QuestionEntry.TABLE_NAME,   // The table to query
-                    projection,             // The array of columns to return (pass null to get all)
-                    null,              // The columns for the WHERE clause
-                    null,          // The values for the WHERE clause
-                    null,                   // don't group the rows
-                    null,                   // don't filter by row groups
-                    null               // The sort order
-            );*/
             cursor=db.rawQuery("SELECT Count(*) from " + AnimeContract.QuestionEntry.TABLE_NAME +";",null);
             cursor.moveToFirst();
             int num = cursor.getInt(cursor.getColumnIndexOrThrow("Count(*)"));
@@ -86,24 +77,6 @@ public class CustomQuestionSearch extends AsyncTask<String, String, Cursor> {
         };
         String selection = BaseColumns._ID + " = ?";
 
-        /*String[] selectionArgs = {String.valueOf(r)};
-
-        String sortOrder =
-                BaseColumns._ID + " ASC";
-
-
-        try
-        {
-            cursor = db.query(
-                    AnimeContract.QuestionEntry.TABLE_NAME,   // The table to query
-                    projection,             // The array of columns to return (pass null to get all)
-                    selection,              // The columns for the WHERE clause
-                    selectionArgs,          // The values for the WHERE clause
-                    null,                   // don't group the rows
-                    null,                   // don't filter by row groups
-                    sortOrder               // The sort order
-            );
-        }*/
         try
         {
             cursor = db.query(

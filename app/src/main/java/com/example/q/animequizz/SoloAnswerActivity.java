@@ -1,8 +1,11 @@
 package com.example.q.animequizz;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +17,7 @@ import android.widget.TextView;
 import pl.droidsonroids.gif.GifImageView;
 
 public class SoloAnswerActivity extends AppCompatActivity {
-
+/*Activity that shows the answers in the solo mode*/
 
     ImageView image;
     GifImageView loading;
@@ -25,6 +28,11 @@ public class SoloAnswerActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
+        int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
+        setTheme(theme);
+
         setContentView(R.layout.activity_answer);
 
         Button title = findViewById(R.id.btn_qtitlemenu);
@@ -110,8 +118,37 @@ public class SoloAnswerActivity extends AppCompatActivity {
 
     }
 
+    public void LoadImage(Bitmap bm, final int type, final int malid)
+    {
+        Log.i("AnimeQuizz", "AnimeStuff: About to link to mal page:  type " + type +" mal id " +malid);
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(type==1)
+                {
+                    Intent checkanime = new Intent(Intent.ACTION_VIEW, Uri.parse("https://myanimelist.net/anime/" + malid));
+                    startActivity(checkanime);
+                }
+                else if(type==2)
+                {
+                    Intent checkmanga = new Intent(Intent.ACTION_VIEW, Uri.parse("https://myanimelist.net/manga/" + malid));
+                    startActivity(checkmanga);
+                }
+                else if(type==3)
+                {
+                    Intent checkchar = new Intent(Intent.ACTION_VIEW, Uri.parse("https://myanimelist.net/character/" + malid));
+                    startActivity(checkchar);
+                }
 
-    public void LoadImage(Bitmap bm)//, int malid puis set onclick
+            }
+        });
+
+        LoadImage(bm);
+
+
+    }
+
+    public void LoadImage(Bitmap bm)
     {
         loading.setVisibility(View.INVISIBLE);
         image.setVisibility(View.VISIBLE);

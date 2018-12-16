@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
+    /*Searches for an image in MyAnimeList asynchronously in the normal mode (with questions from the online database accessed to with a json API)*/
+
 
     SoloAnswerActivity act;
     DuoAnswerActivity actDuo;
@@ -185,11 +187,7 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                 }
 
 
-                //
-
                 Log.i("AnimeQuizz", "AnimeStuff:ImageSearch " + urls[i].toString() + " "+jsonAnswer);
-                //
-                //return new JSONObject(jsonAnswer);
 
 
             }
@@ -211,17 +209,18 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
         JSONObject selectedObject = null;
         int fans = 0;
 
-
             for(int i=0;i<jsons.length;i++)
             {
                 try
                 {
                     JSONObject result = jsons[i].getJSONArray("result").getJSONObject(0);
                     int members = result.getInt("members");
+                    int thisid = result.getInt("mal_id");
                     String title = result.getString("title");
                     Log.i("AnimeQuizz", "AnimeStuff: Titre:" + title + " Membres: " + members);
                     if(members>fans)
                     {
+
                         selectedObject=result;
                         fans=members;
                     }
@@ -237,10 +236,15 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
 
 
         String url_image="";
+        int malid=-1;
+        String type="";
         try
         {
             Log.i("AnimeQuizz", "AnimeStuff:Elected object: " + selectedObject.toString());
             url_image=selectedObject.getString("image_url");
+            malid=selectedObject.getInt("mal_id");
+            type=selectedObject.getString("type");
+
         }
         catch(Exception e)
         {
@@ -248,17 +252,46 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
         }
 
 
+        int typeid=-1;
+        if(type.equals("TV") || type.equals("OVA") ||type.equals("ONA") ||type.equals("Special") ||type.equals("Movie") ||type.equals("Music"))
+        {
+            typeid=1;
+        }
+        else if(type.equals("Manga") || type.equals("Novel") ||type.equals("One-shot") ||type.equals("Doujinshi") ||type.equals("Manhua") ||type.equals("OEL")||type.equals("Manhwa"))
+        {
+            typeid=2;
+        }
+
+
         BitmapDownloader bd;
-        if(mode==0)
+
+        if(malid>0 && typeid>0)
         {
-            bd = new BitmapDownloader(act);
-            bd.execute(url_image);
+            if(mode==0)
+            {
+                bd = new BitmapDownloader(act,typeid,malid);
+                bd.execute(url_image);
+            }
+            else if(mode==1)
+            {
+                bd = new BitmapDownloader(actDuo,typeid,malid);
+                bd.execute(url_image);
+            }
         }
-        else if(mode==1)
+        else
         {
-            bd = new BitmapDownloader(actDuo);
-            bd.execute(url_image);
+            if(mode==0)
+            {
+                bd = new BitmapDownloader(act);
+                bd.execute(url_image);
+            }
+            else if(mode==1)
+            {
+                bd = new BitmapDownloader(actDuo);
+                bd.execute(url_image);
+            }
         }
+
 
 
 
@@ -325,11 +358,6 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
 
         String[] words = s0.split(" ");
 
-        /*Log.i("AnimeQuizz", "AnimeStuff: All words: ");
-        for(String s:words)
-        {
-            Log.i("AnimeQuizz", "AnimeStuff: " + s);
-        }*/
 
 
         String[] notCounted = new String[]{"The","In","What","Who","How", "Which"};
