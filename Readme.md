@@ -1,4 +1,4 @@
-~##Anime Trivia##~
+##Anime Trivia##
 
 #General
 
