@@ -11,27 +11,51 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SoloQuestionActivity" />
-        <activity android:name=".SoloAnswerActivity" />
-        <activity android:name=".SoloResultsActivity" />
-        <activity android:name=".DuoQuestionActivity" />
-        <activity android:name=".DuoAnswerActivity" />
+        <activity android:name=".SoloQuestionActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".SoloAnswerActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".SoloResultsActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".DuoQuestionActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".DuoAnswerActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
         <activity
             android:name=".DuoResultsActivity"
             android:label="@string/title_activity_duo_results"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChoixModeActivity" />
-        <activity android:name=".CustomListActivity" />
-        <activity android:name=".AddCustomActivity" />
-        <activity android:name=".OptionsActivity" />
-        <activity android:name=".CreditsActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".ChoixModeActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".CustomListActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".AddCustomActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".OptionsActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"/>
+        <activity android:name=".CreditsActivity"
+            android:configChanges = "orientation"
+            android:screenOrientation = "portrait"></activity>
     </application>
 
 </manifest>

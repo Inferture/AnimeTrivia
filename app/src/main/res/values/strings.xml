@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AnimeQuizz</string>
+    <string name="app_name">Anime Trivia</string>
     <string name="title_activity_duo_results">DuoResultsActivity</string>
 
     <string name="questions_number">numquestions</string>

@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Random;
 
 public class QuestionSearch extends AsyncTask<String, String, JSONObject> {
     /*Searches asynchronously for questions  in the normal mode (with questions from the online Open Trivia Database accessed to with a json API)*/
@@ -105,7 +106,10 @@ public class QuestionSearch extends AsyncTask<String, String, JSONObject> {
         try
         {
             JSONArray results = json.getJSONArray("results");
-            JSONObject firstResult = results.getJSONObject(0);
+            int len = results.length();
+            Random rn = new Random();
+            int rand = rn.nextInt(len);
+            JSONObject firstResult = results.getJSONObject(rand);
 
             question=firstResult.getString("question");
 
