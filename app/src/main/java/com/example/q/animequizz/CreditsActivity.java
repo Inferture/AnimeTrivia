@@ -67,7 +67,6 @@ public class CreditsActivity extends AppCompatActivity {
         txt_jikan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
                 Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://jikan.moe/"));
                 startActivity(checkMAL);
 
@@ -77,7 +76,6 @@ public class CreditsActivity extends AppCompatActivity {
         im_trivia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
                 Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://opentdb.com/"));
                 startActivity(checkMAL);
 
@@ -86,7 +84,6 @@ public class CreditsActivity extends AppCompatActivity {
         txt_trivia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
                 Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://opentdb.com/"));
                 startActivity(checkMAL);
 
@@ -97,7 +94,6 @@ public class CreditsActivity extends AppCompatActivity {
         im_loadingio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
                 Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://loading.io/"));
                 startActivity(checkMAL);
 
@@ -106,7 +102,6 @@ public class CreditsActivity extends AppCompatActivity {
         txt_loadingio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
                 Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://loading.io/"));
                 startActivity(checkMAL);
 
@@ -117,7 +112,6 @@ public class CreditsActivity extends AppCompatActivity {
         im_overlordppp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
                 Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://myanimelist.net/anime/31138/"));
                 startActivity(checkMAL);
 
@@ -126,7 +120,6 @@ public class CreditsActivity extends AppCompatActivity {
         txt_overlordppp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
                 Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://myanimelist.net/anime/31138/"));
                 startActivity(checkMAL);
 
@@ -137,8 +130,7 @@ public class CreditsActivity extends AppCompatActivity {
         txt_sourcecode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
-                Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Inferture/AnimeQuizz/tree/efbcfc3dbaf55321c4dec7e680a87d83ae5c994a/"));
+                Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Inferture/AnimeQuizz/"));
                 startActivity(checkMAL);
 
             }
