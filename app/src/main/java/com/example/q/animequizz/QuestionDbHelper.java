@@ -63,6 +63,10 @@ public class QuestionDbHelper extends SQLiteOpenHelper {
         {
             values.put(AnimeContract.QuestionEntry.COLUMN_NAME_MALID, malid);
         }
+        else
+        {
+            values.put(AnimeContract.QuestionEntry.COLUMN_NAME_MALID,-1);
+        }
 
 
         long newRowId = db.insert(AnimeContract.QuestionEntry.TABLE_NAME, null, values);

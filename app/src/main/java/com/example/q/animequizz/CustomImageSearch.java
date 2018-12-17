@@ -106,7 +106,7 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
         Bitmap bm=null;
 
-
+        Log.i("AnimeQuizz", "AnimeStuff: malid :" + malid + "typeid " + type);
 
         if(imageurl != null && !imageurl.equals("") )
         {
@@ -117,6 +117,10 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
             if(malid >0 && type >=1 && type<=3)
             {
                 resmalid=malid;
+                restype=type;
+            }
+            if(type >=1 && type<=3)
+            {
                 restype=type;
             }
             return bm;
@@ -265,17 +269,6 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                                     if(bm!=null)
                                     {
 
-                                        try
-                                        {
-                                            resmalid= json.getJSONArray("result").getJSONObject(0).getInt("mal_id");
-                                            restype=1;
-                                        }
-                                        catch(Exception e)
-                                        {
-
-                                        }
-
-
                                         return bm;
                                     }
                                 }
@@ -291,15 +284,6 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                                         bm=SetImage( (JSONObject[])jsonList.toArray(new JSONObject[jsonList.size()]));
                                         if(bm!=null)
                                         {
-                                            try
-                                            {
-                                                resmalid= json.getJSONArray("result").getJSONObject(1).getInt("mal_id");
-                                                restype=1;
-                                            }
-                                            catch(Exception e)
-                                            {
-
-                                            }
                                             return bm;
                                         }
                                     }
@@ -314,15 +298,6 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                                         bm=SetImage( (JSONObject[])jsonList.toArray(new JSONObject[jsonList.size()]));
                                         if(bm!=null)
                                         {
-                                            try
-                                            {
-                                                resmalid= json.getJSONArray("result").getJSONObject(2).getInt("mal_id");
-                                                restype=1;
-                                            }
-                                            catch(Exception e)
-                                            {
-
-                                            }
                                             return bm;
                                         }
                                     }
