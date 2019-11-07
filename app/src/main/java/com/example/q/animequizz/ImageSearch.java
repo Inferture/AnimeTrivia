@@ -73,8 +73,8 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                         JSONObject json = new JSONObject(jsonAnswer);
                         String proposition=Strip(urls[i].toString().split("q=")[1].toLowerCase()," .?!");
                         proposition=Lower(Strip(proposition.split("&")[0]," .?!,"));
-                            Log.i("AnimeQuizz", "AnimeStuff:anime: " + json.getJSONArray("result").getJSONObject(0).toString());
-                        String title = Lower(Strip(json.getJSONArray("result").getJSONObject(0).getString("title")," .?!,"));
+                            Log.i("AnimeQuizz", "AnimeStuff:anime: " + json.getJSONArray("results").getJSONObject(0).toString());
+                        String title = Lower(Strip(json.getJSONArray("results").getJSONObject(0).getString("title")," .?!,"));
 
 
 
@@ -89,9 +89,9 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                         }
 
 
-                        if(json.getJSONArray("result").length()>2)
+                        if(json.getJSONArray("results").length()>2)
                         {
-                            String title2 = Lower(Strip(json.getJSONArray("result").getJSONObject(1).getString("title")," .?!,"));
+                            String title2 = Lower(Strip(json.getJSONArray("results").getJSONObject(1).getString("title")," .?!,"));
                             if(title2.equals(proposition))
                             {
                                 jsonList=new ArrayList<>();
@@ -99,9 +99,9 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                                 return (JSONObject[])jsonList.toArray(new JSONObject[jsonList.size()]);
                             }
                         }
-                        if(json.getJSONArray("result").length()>3)
+                        if(json.getJSONArray("results").length()>3)
                         {
-                         String title3 = Lower(Strip(json.getJSONArray("result").getJSONObject(2).getString("title")," .?!,"));
+                         String title3 = Lower(Strip(json.getJSONArray("results").getJSONObject(2).getString("title")," .?!,"));
                          if(title3.equals(proposition))
                           {
                                     jsonList=new ArrayList<>();
@@ -132,7 +132,7 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
 
                         Log.i("AnimeQuizz", "AnimeStuff: Read character stream: " + jsonAnswer);
                         JSONObject jsonCharacter = new JSONObject(jsonAnswer);
-                        JSONObject character = jsonCharacter.getJSONArray("result").getJSONObject(0);
+                        JSONObject character = jsonCharacter.getJSONArray("results").getJSONObject(0);
                         Log.i("AnimeQuizz", "AnimeStuff: Got the character");
 
 
@@ -140,17 +140,17 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                         if(character.getJSONArray("anime").length()>0)
                         {
                             JSONObject anime = character.getJSONArray("anime").getJSONObject(0);
-                            String animeTitle = anime.getString("title");
+                            String animeTitle = anime.getString("name");
                             Log.i("AnimeQuizz", "AnimeStuff: Got the title " + animeTitle);
-                            newURL = new URL("https://api.jikan.moe/search/anime?q=" + animeTitle);
+                            newURL = new URL("https://api.jikan.moe/v3/search/anime?q=" + animeTitle);
                             Log.i("AnimeQuizz", "AnimeStuff:" + newURL.toString());
                         }
                         else
                         {
                             JSONObject anime = character.getJSONArray("manga").getJSONObject(0);
-                            String mangaTitle = anime.getString("title");
+                            String mangaTitle = anime.getString("name");
                             Log.i("AnimeQuizz", "AnimeStuff: Got the title");
-                            newURL = new URL("https://api.jikan.moe/search/anime?q=" + mangaTitle);
+                            newURL = new URL("https://api.jikan.moe/v3/search/anime?q=" + mangaTitle);
                             Log.i("AnimeQuizz", "AnimeStuff: Got the title " + mangaTitle);
                         }
 
@@ -213,7 +213,7 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
             {
                 try
                 {
-                    JSONObject result = jsons[i].getJSONArray("result").getJSONObject(0);
+                    JSONObject result = jsons[i].getJSONArray("results").getJSONObject(0);
                     int members = result.getInt("members");
                     int thisid = result.getInt("mal_id");
                     String title = result.getString("title");
@@ -337,11 +337,11 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
         for (int i=0;2*i+1<qsq.length;i++)
         {
             nextSearch=qsq[2*i+1];
-            l.add("https://api.jikan.moe/search/anime?q=" + nextSearch + "&limit=2");
-            l.add("https://api.jikan.moe/search/character?q=" + nextSearch + "&limit=2");
+            l.add("https://api.jikan.moe/v3/search/anime?q=" + nextSearch + "&limit=2");
+            l.add("https://api.jikan.moe/v3/search/character?q=" + nextSearch + "&limit=2");
             if(q.contains("anime "+ "\"" + nextSearch + "\"") || q.contains("in "+ "\"" + nextSearch + "\"") || q.contains("anime, "+ "\"" + nextSearch + "\"") || q.contains("In "+ "\"" + nextSearch + "\"") || q.contains("film "+ "\"" + nextSearch + "\"")) {
                 List<String> l2 = new ArrayList<>();
-                l2.add("https://api.jikan.moe/search/anime?q=" + nextSearch + "&limit=2");
+                l2.add("https://api.jikan.moe/v3/search/anime?q=" + nextSearch + "&limit=2");
                 return (String[]) l.toArray(new String[l2.size()]);
 
             }
@@ -378,8 +378,8 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                 if(!nextSearch.equals(""))
                 {
                     nextSearch=Strip(nextSearch," ,?!.");
-                    l.add("https://api.jikan.moe/search/anime?q=" + nextSearch + "&limit=2");
-                    l.add("https://api.jikan.moe/search/character?q=" + nextSearch+ "&limit=2");
+                    l.add("https://api.jikan.moe/v3/search/anime?q=" + nextSearch + "&limit=2");
+                    l.add("https://api.jikan.moe/v3/search/character?q=" + nextSearch+ "&limit=2");
                     nextSearch="";
                 }
             }
@@ -388,14 +388,14 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
         if(!nextSearch.equals(""))
         {
             nextSearch=Strip(nextSearch," ,?!.");
-            l.add("https://api.jikan.moe/search/anime?q=" + nextSearch);
-            l.add("https://api.jikan.moe/search/character?q=" + nextSearch);
+            l.add("https://api.jikan.moe/v3/search/anime?q=" + nextSearch);
+            l.add("https://api.jikan.moe/v3/search/character?q=" + nextSearch);
             nextSearch="";
         }
         if(!Lower(a).equals("true") && !Lower(a).equals("false") )
         {
-            l.add("https://api.jikan.moe/search/anime?q=" + a);
-            l.add("https://api.jikan.moe/search/character?q=" + a);
+            l.add("https://api.jikan.moe/v3/search/anime?q=" + a);
+            l.add("https://api.jikan.moe/v3/search/character?q=" + a);
         }
 
 
