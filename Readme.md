@@ -1,6 +1,6 @@
-##Anime Trivia##
+## Anime Trivia##
 
-#General
+# General
 
 Project made during the course "Mobile development Android" in Telecom SudParis
 
@@ -10,7 +10,7 @@ Uses Light sensor in the option menu to choose between light and dark theme, but
 any (you can also change the theme manually)
 
 
-#What works now:
+# What works now:
 
 Play in solo or in split screen duo on some anime trivia questions from the open trivia database
 Make your own questions
@@ -22,13 +22,13 @@ It still works fairly well from experience.
 
 
 
-#Ideas for improvment:
+# Ideas for improvment:
 
 Bluetooth multiplayer (maybe even more that 2 players)
 Bluetooth question sharing
 
 
-#Credits:
+# Credits:
 
 MyAnimeList for the anime database: https://myanimelist.net/
 Jikan for the MAL unofficial REST API: https://jikan.moe/
