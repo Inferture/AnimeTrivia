@@ -31,8 +31,13 @@ Bluetooth question sharing
 ## Credits:
 
 MyAnimeList for the anime database: https://myanimelist.net/
+
 Jikan for the MAL unofficial REST API: https://jikan.moe/
+
 Open Trivia Database for the questions: https://opentdb.com/
+
 Loading.io for the loading animations : https://loading.io/
+
 The anime Overlord: Ple Ple Pleiades for the gifs: https://myanimelist.net/anime/31138 | http://overlord-anime.com/
+
 Font used for the logo, Anime Ace: https://www.1001fonts.com/anime-ace-font.html
