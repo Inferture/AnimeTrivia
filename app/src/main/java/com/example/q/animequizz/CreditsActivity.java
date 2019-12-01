@@ -11,20 +11,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.net.URL;
 
+
+
+/*Activity to credit resources used etc...*/
 public class CreditsActivity extends AppCompatActivity {
-    /*Activity to credit resources used etc...*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Theme
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
         int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
         setTheme(theme);
 
         setContentView(R.layout.activity_credits);
 
+        //Get layout elements
         ImageView im_mal = findViewById(R.id.im_mal);
         TextView txt_mal = findViewById(R.id.txt_mal);
 
@@ -44,11 +48,11 @@ public class CreditsActivity extends AppCompatActivity {
 
         Button btn_title = findViewById(R.id.btn_ctitle);
 
-
+        //When tapping on an element, the browser opens to the appropriate link
         im_mal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
+                //Opens browser  to https://myanimelist.net/
                 Intent checkMAL = new Intent(Intent.ACTION_VIEW, Uri.parse("https://myanimelist.net/"));
                 startActivity(checkMAL);
 
@@ -139,10 +143,8 @@ public class CreditsActivity extends AppCompatActivity {
         btn_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Browser  https://myanimelist.net/
                 Intent party = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(party);
-
             }
         });
     }

@@ -1,6 +1,6 @@
 package com.example.q.animequizz;
 
-import android.app.VoiceInteractor;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,11 +17,14 @@ import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
+/*Activity that shows the questions in the split screen duo mode*/
 public class DuoQuestionActivity extends AppCompatActivity {
-    /*Activity that shows the questions in the split screen duo mode*/
+
+
 
     String realAnswer="D.D.D.";
 
+    //Layout elements
     TextView questionJ1;
     TextView questionJ2;
 
@@ -44,7 +47,7 @@ public class DuoQuestionActivity extends AppCompatActivity {
 
 
     int maxQuestion = OptionsActivity.numQuestions;
-    //int maxQuestion=OptionsActivity.numQuestions;
+
     int numQuestion;
 
     String ansJ1="";
@@ -55,12 +58,16 @@ public class DuoQuestionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
-
+        //Preferred number of questions
         maxQuestion = sharedPref.getInt(getString(R.string.questions_number), 10);
-
+        //Theme
         int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
         setTheme(theme);
+
+
+        //Data given when calling the activity
         Bundle extras = getIntent().getExtras();
         if(extras!=null)
         {
@@ -88,6 +95,7 @@ public class DuoQuestionActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_question_duo);
 
+        //Layout elements
         loadingJ1 = findViewById(R.id.im_loadingj1);
         loadingJ1.setVisibility(View.INVISIBLE);
 
@@ -114,11 +122,14 @@ public class DuoQuestionActivity extends AppCompatActivity {
         TextView numeroTextJ1= findViewById(R.id.numquestionj1);
         TextView numeroTextJ2= findViewById(R.id.numquestionj2);
 
+        //Scores and question number
         scoreTextJ1.setText("Score: (You) " + scorej1 + ":" + scorej2 + "(Opponent)");
         scoreTextJ2.setText("Score: (You) " + scorej2 + ":" + scorej1 + "(Opponent)");
 
         numeroTextJ1.setText("Question " + numQuestion +"/" + maxQuestion);
         numeroTextJ2.setText("Question " + numQuestion +"/" + maxQuestion);
+
+        //Buttons to propose an answer
 
         answer1J1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -318,13 +329,10 @@ public class DuoQuestionActivity extends AppCompatActivity {
             }
         });
 
-
         NextQuestion();
-
-
-
     }
 
+    //Go to the answer activity
     protected  void ShowAnswer(String answerGivenJ1, String answerGivenJ2, int winner)
     {
         Intent party = new Intent(getApplicationContext(), DuoAnswerActivity.class);
@@ -358,6 +366,7 @@ public class DuoQuestionActivity extends AppCompatActivity {
         startActivity(party);
     }
 
+    //If there are questions left, load another question, else, show the score
     protected  void NextQuestion()
     {
 
@@ -510,6 +519,8 @@ public class DuoQuestionActivity extends AppCompatActivity {
 
     }
 
+    //When someone gives a false answer, they cannot answer again so
+    //they are "muted"
     protected void Mute(int i)
     {
         if(i==1)
@@ -530,6 +541,7 @@ public class DuoQuestionActivity extends AppCompatActivity {
         }
     }
 
+    //To show the answer in a random order
     protected <T> T[] Permute(T[] tab)
     {
         T[] newTab = tab.clone();
@@ -545,15 +557,4 @@ public class DuoQuestionActivity extends AppCompatActivity {
         return newTab;
     }
 
-    protected  <T> T[] DropNull(T[] tab)
-    {
-        List<T> newList = new ArrayList<T>();
-
-        for(int i=0;i<tab.length;i++)
-        {
-            newList.add(tab[i]);
-        }
-
-        return (T[])newList.toArray();
-    }
 }

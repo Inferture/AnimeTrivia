@@ -4,18 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import pl.droidsonroids.gif.GifImageView;
 
+/*Activity that shows the end result (winner/loser or draw) in the split screen duo mode*/
 public class DuoResultsActivity extends AppCompatActivity {
-    /*Activity that shows the end result (winner/loser or draw) in the split screen duo mode*/
+
 
 
     int scoreJ1;
@@ -29,19 +27,22 @@ public class DuoResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        //Theme
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
         int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
         setTheme(theme);
 
         setContentView(R.layout.activity_results_duo);
 
+        //Parameters
         Bundle extras = getIntent().getExtras();
         scoreJ1 = extras.getInt("scorej1", 0);
         scoreJ2 = extras.getInt("scorej2", 0);
         maxScore = extras.getInt("max", 1);
 
 
-
+        //Layout elements
         final Button menuJ1 = findViewById(R.id.btn_menuj1);
         final Button menuJ2 = findViewById(R.id.btn_menuj2);
 
@@ -50,16 +51,17 @@ public class DuoResultsActivity extends AppCompatActivity {
         TextView commentJ1= findViewById(R.id.commentj1);
         TextView commentJ2= findViewById(R.id.commentj2);
 
-        scoreTextJ1.setText("Score: " + scoreJ1 + "/" + maxScore);
-        scoreTextJ2.setText("Score: " + scoreJ2 + "/" + maxScore);
-
         gifJ1 = findViewById(R.id.im_resultsj1);
         gifJ2 = findViewById(R.id.im_resultsj2);
 
+        //End score
+        scoreTextJ1.setText("Score: " + scoreJ1 + "/" + maxScore);
+        scoreTextJ2.setText("Score: " + scoreJ2 + "/" + maxScore);
 
 
 
 
+        //We set the pictures according to who won
         if(scoreJ1>scoreJ2)
         {
             gifJ1.setImageResource(R.drawable.overlord_victory);
@@ -89,6 +91,7 @@ public class DuoResultsActivity extends AppCompatActivity {
         }
 
 
+        //Back to the menu when they are both ready for it
         menuJ1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,7 +110,6 @@ public class DuoResultsActivity extends AppCompatActivity {
                 {
                     Intent party = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(party);
-
                 }
 
             }
@@ -131,7 +133,6 @@ public class DuoResultsActivity extends AppCompatActivity {
                 {
                     Intent party = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(party);
-
                 }
 
             }

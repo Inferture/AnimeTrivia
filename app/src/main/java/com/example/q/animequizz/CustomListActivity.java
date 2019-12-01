@@ -14,14 +14,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/*Shows all the questions of the database and allows you to either create a new one or choose to modify an existing one */
 public class CustomListActivity extends AppCompatActivity {
-    /*Shows all the questions of the database and allows you to either create a new one or choose to modify an existing one */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +36,11 @@ public class CustomListActivity extends AppCompatActivity {
 
         Log.i("AnimeQuizz", "AnimeStuff: Entered the custom class");
 
+        //Access to the databaase
         QuestionDbHelper qdh = new QuestionDbHelper(getApplicationContext());
         SQLiteDatabase db = qdh.getWritableDatabase();
 
-
+        //Layout elements
         ArrayAdapter<String> tab = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_questions);
 
         final ListView listQuestions = (ListView) findViewById(R.id.lst_questions);
@@ -49,6 +49,8 @@ public class CustomListActivity extends AppCompatActivity {
 
         Button btn_titlemenu = findViewById(R.id.btn_titlemenu);
 
+
+        //Add a new question
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,11 +60,11 @@ public class CustomListActivity extends AppCompatActivity {
             }
         });
 
-
+        //Back to the main activity
         btn_titlemenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent party = new Intent(getApplicationContext(), SoloQuestionActivity.class);
+
                 Intent party = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(party);
             }
@@ -70,12 +72,7 @@ public class CustomListActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-        //On crée la table si elle n'existe pas
+        //We create the table if it does not already exists
         try
         {
             db.execSQL(AnimeContract.SQL_CREATE_ENTRIES);
@@ -83,21 +80,24 @@ public class CustomListActivity extends AppCompatActivity {
         }
         catch(Exception e)
         {
-            //la table existe
+            //the table exists
             Log.i("AnimeQuizz", "AnimeStuff: Table already exists");
         }
 
 
 
         Log.i("AnimeQuizz", "AnimeStuff: got the database");
-        /*qdh.AddQuestion(db, "In the anime \"Naruto Shippuden\", which of the following attribute does Naruto has an affinity for ?" ,
+        /*
+        //Example of question:
+        qdh.AddQuestion(db, "In the anime \"Naruto Shippuden\", which of the following attribute does Naruto has an affinity for ?" ,
                 "Wind", "Fire", "Water", "Thunder",
                 "http://narutoblazing.gamea.co/file/content/15vfbxgh/6s3h6vzx/277816/18b6215a71cef9fc71bb6271973b48c35bcf938a_500.jpg",
-                "Naruto", 3, 17);*/
+                "Naruto", 3, 17);
+        */
 
 
         Log.i("AnimeQuizz", "AnimeStuff: put stuff in it");
-        //SQL lecture des valeurs
+        //SQL reading the values
         String[] projection = {
                 BaseColumns._ID,
                 AnimeContract.QuestionEntry.COLUMN_NAME_QUESTION,
@@ -135,11 +135,9 @@ public class CustomListActivity extends AppCompatActivity {
         }
 
 
-
-
-
         try {
             int k=0;
+            //Add all the questions
             while (cursor.moveToNext()) {
                 long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry._ID));
                 String itemQuestion = cursor.getString(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_QUESTION));
@@ -158,19 +156,13 @@ public class CustomListActivity extends AppCompatActivity {
         {
             Log.i("AnimeQuizz", "AnimeStuff: error when reading query result :" + e.toString());
         }
-        /*Après désinstallation puis réinstallation: table existe toujours, pas les données, créer la table si elle n'existe pas.*/
 
-        /*for(int i=0;i<170;i++)
-        {
-
-            tab.add("Haha " + i);
-        }*/
-
-
-
-
+        //Sets the listview with the tab ArrayAdapter (tab contains all the questions)
         listQuestions.setAdapter(tab);
 
+        //When clicking on an object, we go to the AddCustomActivity to modify the question.
+        //We give the id so that the activity knows we are updating a question and not adding a new one
+        //and which question it is.
         listQuestions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -191,39 +183,6 @@ public class CustomListActivity extends AppCompatActivity {
 
 
         Log.i("AnimeQuizz", "AnimeStuff: number of children p:" + listQuestions.getChildCount());
-
-        /*for(int i=0; i<listQuestions.getChildCount(); i++)
-        {
-            TextView tv =null;
-            Log.i("AnimeQuizz", "AnimeStuff: adding touch to the textview :");
-
-                //tv = (TextView)listQuestions.getItemAtPosition(i);
-                tv= (TextView)listQuestions.getChildAt(i);
-
-
-
-
-            Log.i("AnimeQuizz", "AnimeStuff: 1st step for touch :");
-
-            try
-            {
-                tv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        Intent party = new Intent(getApplicationContext(), AddCustomActivity.class);
-                        startActivity(party);
-                    }
-                });
-            }
-
-            catch(Exception e)
-            {
-                Log.i("AnimeQuizz", "AnimeStuff: error when doing stuff :" + e.toString());
-            }
-
-            Log.i("AnimeQuizz", "AnimeStuff: added touch :");
-        }*/
 
         Log.i("AnimeQuizz", "AnimeStuff: over :");
 

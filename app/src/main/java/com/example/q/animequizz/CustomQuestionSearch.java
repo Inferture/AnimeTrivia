@@ -6,12 +6,10 @@ import android.os.AsyncTask;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import org.json.JSONObject;
-
 import java.util.Random;
 
-public class CustomQuestionSearch extends AsyncTask<String, String, Cursor> {
 /*Searches for a question in the database (custom questions created by the user)*/
+public class CustomQuestionSearch extends AsyncTask<String, String, Cursor> {
 
 
 
@@ -45,8 +43,9 @@ public class CustomQuestionSearch extends AsyncTask<String, String, Cursor> {
         String[] projection = {
                 BaseColumns._COUNT,
         };
-        int r=1;
+        int r=1;//Will be a random number that will allow us to take a random question in the database.
         Cursor cursor=null;
+        //We get the number of question in the database (num) and r is a random number between 0 (included) and num (excluded)
         try
         {
             cursor=db.rawQuery("SELECT Count(*) from " + AnimeContract.QuestionEntry.TABLE_NAME +";",null);
@@ -94,21 +93,16 @@ public class CustomQuestionSearch extends AsyncTask<String, String, Cursor> {
             Log.i("AnimeQuizz", "AnimeStuff: error when making a query :" + e.toString());
         }
 
-
+        //We choose the r^th question to make it random
         for(int i=0;i<=r;i++)
         {
             cursor.moveToNext();
         }
 
-
-
-
-
-
-
         return cursor;
     }
 
+    //We get the data from the question and send it to the appropriate activity
     @Override
     protected void onPostExecute(Cursor cursor) {
 

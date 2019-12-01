@@ -5,6 +5,8 @@
     <string name="questions_number">numquestions</string>
     <string name="theme">theme</string>
 
+    <string name="JikanURL">https://api.jikan.moe/v3/</string>
+
     <string-array name="mal_types">
         <item>Anime</item>
         <item>Manga/Novel</item>

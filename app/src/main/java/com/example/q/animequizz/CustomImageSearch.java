@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -21,17 +20,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/*Look for an image asynchronously and loads this image into an answer activity, for the custom mode (using the database questions)*/
 public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
-    /*Look for an image asynchronously and loads this image into an answer activity, for the custom mode (using the database questions)*/
 
 
     SoloAnswerActivity act;
     DuoAnswerActivity actDuo;
     public QuestionDbHelper qdh;
-    int mode=0;
 
+
+    int mode=0;//0:Solo ; 1:Duo
     int resmalid=-1;
-    int restype=-1;
+    int restype=-1;//1:Anime;2:Manga;3:Character
 
     public CustomImageSearch(SoloAnswerActivity act)
     {
@@ -44,6 +44,8 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         this.actDuo=act;
         mode = 1;
     }
+
+    //Makes a query asynchronously
     protected Bitmap doInBackground(Integer... ids)  {
 
         int id=ids[0];
@@ -94,11 +96,9 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
         cursor.moveToNext();
 
+        //Get the data
         String question = cursor.getString(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_QUESTION));
         String rightanswer = cursor.getString(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_RIGHTANSWER));
-        String falseanswer1 = cursor.getString(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_FALSEANSWER1));
-        String falseanswer2 = cursor.getString(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_FALSEANSWER2));
-        String falseanswer3 = cursor.getString(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_FALSEANSWER3));
         String imageurl = cursor.getString(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_IMAGEURL));
         String subject = cursor.getString(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_SUBJECT));
         int type = cursor.getInt(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_TYPE));
@@ -108,6 +108,8 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
         Log.i("AnimeQuizz", "AnimeStuff: malid :" + malid + "typeid " + type);
 
+
+        //If there is an image url, just download it
         if(imageurl != null && !imageurl.equals("") )
         {
             bm=GetImage(imageurl);
@@ -131,7 +133,7 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         URL url;
 
 
-
+        //Or, if there is an id, just look for the image corresponding to the id and type
         if(malid >0 && type >=1 && type<=3)
         {
             String stringtype="";
@@ -199,10 +201,14 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
         String[] urls = new String[]{};
 
+
         if(subject==null || subject.equals(""))
         {
             urls=GetUrls(question, rightanswer);
         }
+        //Or, if there is a subject, check the type of the subject and look for it
+        //Example: if the subject is "Kira" and the type is Character, search
+        //with the term "Kira"
         else
         {
             String l;
@@ -224,15 +230,16 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
             }
             urls=new String[]{l};
         }
+
+        //jsonList is the list of Json object that could correspond to what we are looking for
         List<JSONObject> jsonList = new ArrayList<>();
 
 
+        //We are going to use the api to make researches with the terms found (for example, the subject)
         for(int i=0;i<urls.length;i++)
         {
             if(!isCancelled())
             {
-
-
                 try
                 {
                     url = new URL(urls[i]);
@@ -240,7 +247,9 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                     String jsonAnswer="";
                     try
                     {
-                        if(i%2==0 && type != 3)
+                        //Links are added by pair, one with an anime, one with a character
+                        //so if i%1==1 it's a search for a character
+                        if(i%2==0 && type != 3)//anime
                         {
                             publishProgress("trying to read stream");
                             InputStream in = new BufferedInputStream(conn.getInputStream());
@@ -261,6 +270,10 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
                                 Log.i("AnimeQuizz", "AnimeStuff:Proposition: " + proposition + "/title:" + title);
 
+
+                                //If we find an anime with the exact same title, we just return its image
+                                //We try this with the first 3 results because sometimes, even if the title is
+                                //exactly the same as the search, it might not be the first result
                                 if(title.equals(proposition))
                                 {
                                     jsonList=new ArrayList<>();
@@ -310,10 +323,8 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                             {
                                 Log.i("AnimeQuizz", "AnimeStuff:ImageSearch Nothing to see here: " + e.toString());
                             }
-
-
                         }
-                        else
+                        else//character
                         {
 
                             Log.i("AnimeQuizz", "AnimeStuff: Trying to get the character");
@@ -322,15 +333,18 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                             InputStream in = new BufferedInputStream(conn.getInputStream());
                             jsonAnswer = readStream(in);
                             publishProgress("already read stream");
-
                             Log.i("AnimeQuizz", "AnimeStuff: Read character stream: " + jsonAnswer);
+
+
+                            //We try to get a character from the research
                             JSONObject jsonCharacter = new JSONObject(jsonAnswer);
                             JSONObject character = jsonCharacter.getJSONArray("results").getJSONObject(0);
                             Log.i("AnimeQuizz", "AnimeStuff: Got the character");
 
 
                             URL newURL;
-                            if(type==3)
+
+                            if(type==3)//If the type is 3, the subject is a character, so we try to return its image
                             {
                                 String url_image="";
                                 try
@@ -359,8 +373,8 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                                     return bm;
 
                                 }
-
                             }
+                            //Else, we try to find an anime or a manga in which this character appears and we add these possibilities to jsonList
                             if(character.getJSONArray("anime").length()>0)
                             {
                                 JSONObject anime = character.getJSONArray("anime").getJSONObject(0);
@@ -432,7 +446,7 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
     }
 
-
+    //Sets the image found in a given json object
     protected Bitmap SetImageCharacter(JSONObject json){
         String url_image="";
         try
@@ -449,6 +463,8 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         return bm;
     }
 
+    //When several json objects are possible selects the one with the most "member"
+    //ie the most popular to take the image
     protected Bitmap SetImage(JSONObject[] jsons) {
 
         JSONObject selectedObject = null;
@@ -473,9 +489,6 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
             {
                 Log.i("AnimeQuizz", "AnimeStuff:ImageSearch Mistake happened on post execution: " + e.toString());
             }
-
-
-
         }
 
 
@@ -509,12 +522,14 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         Bitmap bm = GetImage(url_image);
         return bm;
 
-
-
-
-
     }
 
+    //Loads the image in the appropriate activity
+    //The image will be clickable and clicking it
+    //will open the browser to the myanimelist page
+    //corresponding to the anime/manga/character from
+    //which the image comes from
+    //(which is why malid and typeid are necessary)
     @Override
     protected void onPostExecute(Bitmap bm) {
         super.onPostExecute(bm);
@@ -546,6 +561,7 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
     }
 
+    //Returns the String from an InputStream
     String readStream(InputStream stream) throws IOException
     {
 
@@ -565,6 +581,16 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
 
     }
 
+    //From the queston and the answer, we try to find the appropriate anime/
+    //manga/character and show an image of it (which is clickable and links to
+    //its myanimelist page)
+    //Search the candidates url using the semantic of the question and answer
+    //as well as the form of the question
+    //For example, terms between quotes "" will be treated as candidates
+    //Terms starting with a capital letter will also be treated as candidates
+    //as well as terms following "In..." "In the anime..." etc...
+    //It was made by observing the most recurrent forms of questions in
+    //the trivia database
     String[] GetUrls(String q, String a)
     {
 
@@ -590,15 +616,9 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
                 List<String> l2 = new ArrayList<>();
                 l2.add("https://api.jikan.moe/v3/search/anime?q=" + nextSearch + "&limit=2");
                 return (String[]) l.toArray(new String[l2.size()]);
-
             }
-
         }
-
-
         nextSearch="";
-
-
 
 
         String s0 = q.replace("\"","");
@@ -612,7 +632,7 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         for (int i=0;i<words.length;i++)
         {
             Log.i("AnimeQuizz", "AnimeStuff:" +words[i]);
-            if(Character.isUpperCase(words[i].charAt(0)) && !(i==0 && (Contains(notCounted,words[i]))))
+            if(words[i].length()>0 && Character.isUpperCase(words[i].charAt(0)) && !(i==0 && (Contains(notCounted,words[i]))))
             {
                 Log.i("AnimeQuizz", "AnimeStuff: selected");
                 nextSearch+= " " + words[i];
@@ -650,14 +670,7 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
             Log.i("AnimeQuizz", "AnimeStuff:ImageSearch: " + s);
         }
         return (String[])l.toArray(new String[l.size()]);
-
-
     }
-
-
-
-
-
 
 
 
@@ -674,6 +687,9 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         return false;
     }
 
+    //Strips the characters contained in the string b
+    //at the beginning and at the end from the strip a
+    //Example: Strip("banana","ba") = "nan"
     public String Strip(String a, String b)
     {
         int i=0;
@@ -693,7 +709,10 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         return a.substring(i,j+1);
     }
 
-
+    //Lowers the string, useful for checking if 2 strings are equal
+    //when one might contain capital letters
+    //Used when comparing strings and terms search to check if a title
+    //corresponds exactly to the term we are searching for
     public String Lower(String a)
     {
         String b=a.toLowerCase();
@@ -709,7 +728,7 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
         return b;
     }
 
-
+    //When the image url was found, we use the BitcodeFactory to download the image and return it
     public Bitmap GetImage(String urlmedia)
     {
         Log.i("AnimeQuizz", "AnimeStuff:anime: Trying to get image at url: " +urlmedia);
@@ -735,7 +754,6 @@ public class CustomImageSearch extends AsyncTask<Integer, String, Bitmap> {
             {
                 Log.i("Anime", "Pomme1: Error when getting stream "+ e.toString());
             }
-            //InputStream stream = new BufferedInputStream(conn.getInputStream());
 
             publishProgress("Trying decode stream");
             Log.i("Anime", "Pomme1: Trying to decode stream "+urlmedia);

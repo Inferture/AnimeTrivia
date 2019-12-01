@@ -3,7 +3,6 @@ package com.example.q.animequizz;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -16,8 +15,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/*Searches for an image in MyAnimeList asynchronously in the normal mode (with questions from the online database accessed to with a json API)*/
 public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
-    /*Searches for an image in MyAnimeList asynchronously in the normal mode (with questions from the online database accessed to with a json API)*/
+
 
 
     SoloAnswerActivity act;
@@ -36,14 +36,15 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
         this.actDuo=act;
         mode = 1;
     }
+
+    //Asynchronously looks for an image
     protected JSONObject[] doInBackground(String... strings)  {
-
-
-
 
         HttpURLConnection conn;
         URL url;
 
+        //Parses the question and the answer to get the possible urls for the object
+        //that contains the image
         String[] urls = GetUrls(strings[0], strings[1]);
         List<JSONObject> jsonList = new ArrayList<>();
 
@@ -51,7 +52,6 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
         {
             if(!isCancelled())
             {
-
 
             try
             {
@@ -70,23 +70,23 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
 
                         try
                         {
-                        JSONObject json = new JSONObject(jsonAnswer);
-                        String proposition=Strip(urls[i].toString().split("q=")[1].toLowerCase()," .?!");
-                        proposition=Lower(Strip(proposition.split("&")[0]," .?!,"));
+                            JSONObject json = new JSONObject(jsonAnswer);
+                            String proposition=Strip(urls[i].toString().split("q=")[1].toLowerCase()," .?!");
+                            proposition=Lower(Strip(proposition.split("&")[0]," .?!,"));
                             Log.i("AnimeQuizz", "AnimeStuff:anime: " + json.getJSONArray("results").getJSONObject(0).toString());
-                        String title = Lower(Strip(json.getJSONArray("results").getJSONObject(0).getString("title")," .?!,"));
+                            String title = Lower(Strip(json.getJSONArray("results").getJSONObject(0).getString("title")," .?!,"));
 
 
 
 
-                        Log.i("AnimeQuizz", "AnimeStuff:Proposition: " + proposition + "/title:" + title);
+                            Log.i("AnimeQuizz", "AnimeStuff:Proposition: " + proposition + "/title:" + title);
 
-                        if(title.equals(proposition))
-                        {
-                            jsonList=new ArrayList<>();
-                            jsonList.add(json);
-                            return (JSONObject[])jsonList.toArray(new JSONObject[jsonList.size()]);
-                        }
+                            if(title.equals(proposition))
+                            {
+                                jsonList=new ArrayList<>();
+                                jsonList.add(json);
+                                return (JSONObject[])jsonList.toArray(new JSONObject[jsonList.size()]);
+                            }
 
 
                         if(json.getJSONArray("results").length()>2)
@@ -110,15 +110,12 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                           }
                         }
 
-
                             jsonList.add(json);
                         }
                         catch (Exception e)
                         {
                             Log.i("AnimeQuizz", "AnimeStuff:ImageSearch Nothing to see here: " + e.toString());
                         }
-
-
                     }
                     else
                     {
@@ -174,12 +171,7 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                         {
                             Log.i("AnimeQuizz", "AnimeStuff:ImageSearch Nothing to see here: " + e.toString());
                         }
-
-
                     }
-
-
-
                 }
                 catch(Exception e)
                 {
@@ -202,7 +194,12 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
 
     }
 
-
+    //Loads the image in the appropriate activity
+    //The image will be clickable and clicking it
+    //will open the browser to the myanimelist page
+    //corresponding to the anime/manga/character from
+    //which the image comes from
+    //(which is why malid and typeid are necessary)
     @Override
     protected void onPostExecute(JSONObject[] jsons) {
 
@@ -299,6 +296,7 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
 
     }
 
+    //Returns the String from an InputStream
     String readStream(InputStream stream) throws IOException
     {
 
@@ -318,6 +316,16 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
 
     }
 
+    //From the queston and the answer, we try to find the appropriate anime/
+    //manga/character and show an image of it (which is clickable and links to
+    //its myanimelist page)
+    //Search the candidates url using the semantic of the question and answer
+    //as well as the form of the question
+    //For example, terms between quotes "" will be treated as candidates
+    //Terms starting with a capital letter will also be treated as candidates
+    //as well as terms following "In..." "In the anime..." etc...
+    //It was made by observing the most recurrent forms of questions in
+    //the trivia database
     String[] GetUrls(String q, String a)
     {
 
@@ -345,20 +353,15 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                 return (String[]) l.toArray(new String[l2.size()]);
 
             }
-
         }
 
 
         nextSearch="";
 
 
-
-
         String s0 = q.replace("\"","");
 
         String[] words = s0.split(" ");
-
-
 
         String[] notCounted = new String[]{"The","In","What","Who","How", "Which"};
 
@@ -422,6 +425,9 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
         return false;
     }
 
+    //Strips the characters contained in the string b
+    //at the beginning and at the end from the strip a
+    //Example: Strip("banana","ba") = "nan"
     public String Strip(String a, String b)
     {
         int i=0;
@@ -441,7 +447,10 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
         return a.substring(i,j+1);
     }
 
-
+    //Lowers the string, useful for checking if 2 strings are equal
+    //when one might contain capital letters
+    //Used when comparing strings and terms search to check if a title
+    //corresponds exactly to the term we are searching for
     public String Lower(String a)
     {
         String b=a.toLowerCase();

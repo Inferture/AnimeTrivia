@@ -5,33 +5,32 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.provider.BaseColumns;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
-public class AddCustomActivity extends AppCompatActivity {
 /*Activity used to make/modify/delete custom questions*/
+public class AddCustomActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Theme
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
         int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
         setTheme(theme);
         setContentView(R.layout.activity_custom);
 
+        //Gets the id, -1 if it's a new question
         Bundle extras = getIntent().getExtras();
         long idget=-1;
         if(extras != null)
@@ -45,60 +44,61 @@ public class AddCustomActivity extends AppCompatActivity {
         final SQLiteDatabase db = qdh.getWritableDatabase();
 
 
-        String[] types = new String[]{"Anime","Manga/Novel","Character"} ;//Not used as the strings are in the Resources
         final Spinner spn_maltype = (Spinner) findViewById(R.id.spn_maltype);
-    // Create an ArrayAdapter using the string array and a default spinner layout
+        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.mal_types, android.R.layout.simple_spinner_item);
-    // Specify the layout to use when the list of choices appears
+        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    // Apply the adapter to the spinner
+        // Apply the adapter to the spinner
         spn_maltype.setAdapter(adapter);
         spn_maltype.setEnabled(false);
 
 
-        final TextView txt_question = (TextView)findViewById(R.id.txt_question);
+        //Get elements in the layout
 
-        final TextView txt_answer = (TextView)findViewById(R.id.txt_rightanswer);
+        final TextView txt_question = findViewById(R.id.txt_question);
 
-        final TextView txt_falseanswer1 = (TextView)findViewById(R.id.txt_falseanswer1);
+        final TextView txt_answer = findViewById(R.id.txt_rightanswer);
 
-
-        final TextView txt_prop1 = (TextView)findViewById(R.id.txt_rightanswer);
-
-        final TextView txt_prop2 = (TextView)findViewById(R.id.txt_falseanswer1);
+        final TextView txt_falseanswer1 = findViewById(R.id.txt_falseanswer1);
 
 
-        final Button btn_del = (Button) findViewById(R.id.btn_delete);
+        final TextView txt_prop1 = findViewById(R.id.txt_rightanswer);
+
+        final TextView txt_prop2 = findViewById(R.id.txt_falseanswer1);
 
 
-        final Button btn_prop3 = (Button) findViewById(R.id.btn_prop3);
-        final TextView txt_prop3 = (TextView)findViewById(R.id.txt_falseanswer2);
-
-        final Button btn_prop4 = (Button) findViewById(R.id.btn_prop4);
-        final TextView txt_prop4 = (TextView)findViewById(R.id.txt_falseanswer3);
-
-        final Button btn_imageurl = (Button) findViewById(R.id.btn_imageurl);
-        final TextView txt_imageurl = (TextView)findViewById(R.id.txt_imageurl);
-
-        final Button btn_malid = (Button) findViewById(R.id.btn_malid);
-        final TextView txt_malid = (TextView)findViewById(R.id.txt_malid);
-
-        final Button btn_subject = (Button) findViewById(R.id.btn_subject);
-        final TextView txt_subject = (TextView)findViewById(R.id.txt_subject);
+        final Button btn_del = findViewById(R.id.btn_delete);
 
 
-        final Button btn_back = (Button) findViewById(R.id.btn_backcustom);
+        final Button btn_prop3 =  findViewById(R.id.btn_prop3);
+        final TextView txt_prop3 = findViewById(R.id.txt_falseanswer2);
 
-        final Button btn_submit = (Button) findViewById(R.id.btn_submitquestion);
+        final Button btn_prop4 =  findViewById(R.id.btn_prop4);
+        final TextView txt_prop4 = findViewById(R.id.txt_falseanswer3);
 
-        final Button btn_maltype = (Button) findViewById(R.id.btn_maltype);
+        final Button btn_imageurl =  findViewById(R.id.btn_imageurl);
+        final TextView txt_imageurl = findViewById(R.id.txt_imageurl);
+
+        final Button btn_malid =  findViewById(R.id.btn_malid);
+        final TextView txt_malid = findViewById(R.id.txt_malid);
+
+        final Button btn_subject =  findViewById(R.id.btn_subject);
+        final TextView txt_subject = findViewById(R.id.txt_subject);
+
+
+        final Button btn_back =  findViewById(R.id.btn_backcustom);
+
+        final Button btn_submit =  findViewById(R.id.btn_submitquestion);
+
+        final Button btn_maltype =  findViewById(R.id.btn_maltype);
 
 
         btn_del.setEnabled(false);
-        if(id>=0)//On modifie un élément déjà existant
+        if(id>=0)//Modifying an existing element
         {
-            //Récupération des données
+            //Taking the existing data using a query
             String[] projection = {
                     BaseColumns._ID,
                     AnimeContract.QuestionEntry.COLUMN_NAME_QUESTION,
@@ -122,6 +122,8 @@ public class AddCustomActivity extends AppCompatActivity {
             Log.i("AnimeQuizz", "AnimeStuff: prepared to look into it");
 
             Cursor cursor=null;
+
+            //Trying to make the query
             try
             {
                 cursor = db.query(
@@ -140,7 +142,7 @@ public class AddCustomActivity extends AppCompatActivity {
                 Log.i("AnimeQuizz", "AnimeStuff: error when making a query :" + e.toString());
             }
 
-
+            //Storing the query's result to display in the view
             cursor.moveToNext();
 
             String question = cursor.getString(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_QUESTION));
@@ -153,6 +155,8 @@ public class AddCustomActivity extends AppCompatActivity {
             int type = cursor.getInt(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_TYPE));
             int malid = cursor.getInt(cursor.getColumnIndexOrThrow(AnimeContract.QuestionEntry.COLUMN_NAME_MALID));
 
+
+            //Activating and deactivating elements according to the current data
             if(falseanswer2 != null && !falseanswer2.equals(""))
             {
                 txt_prop3.setEnabled(true);
@@ -187,6 +191,7 @@ public class AddCustomActivity extends AppCompatActivity {
                 txt_malid.setText(String.valueOf(malid));
             }
 
+            //Setting the components values with the data from the query
             txt_question.setText(question);
             txt_prop1.setText(rightanswer);
             txt_prop2.setText(falseanswer1);
@@ -211,21 +216,20 @@ public class AddCustomActivity extends AppCompatActivity {
 
 
 
-
-
-
-
         }
 
         Log.i("AnimeQuizz", "AnimeStuff: Made it out alive ?");
+
+        //Setting buttons that can enable or disable elements
+
         btn_prop3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Boolean b = !txt_prop3.isEnabled();
-                txt_prop3.setEnabled(b);
-                btn_prop4.setEnabled(b);
+                Boolean proposition3Enabled = !txt_prop3.isEnabled();
+                txt_prop3.setEnabled(proposition3Enabled);
+                btn_prop4.setEnabled(proposition3Enabled);
 
-                if(b)
+                if(proposition3Enabled)
                 {
 
                     btn_prop3.setText("Delete proposition 3");
@@ -244,9 +248,9 @@ public class AddCustomActivity extends AppCompatActivity {
         btn_prop4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Boolean b = !txt_prop4.isEnabled();
-                txt_prop4.setEnabled(b);
-                if(b)
+                Boolean proposition4Enabled = !txt_prop4.isEnabled();
+                txt_prop4.setEnabled(proposition4Enabled);
+                if(proposition4Enabled)
                 {
                     btn_prop4.setText("Delete proposition 4");
 
@@ -261,9 +265,9 @@ public class AddCustomActivity extends AppCompatActivity {
         btn_subject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Boolean b = !txt_subject.isEnabled();
-                txt_subject.setEnabled(b);
-                if(b)
+                Boolean subjectEnabled = !txt_subject.isEnabled();
+                txt_subject.setEnabled(subjectEnabled);
+                if(subjectEnabled)
                 {
                     btn_subject.setText("Delete subject");
 
@@ -279,9 +283,9 @@ public class AddCustomActivity extends AppCompatActivity {
         btn_imageurl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Boolean b = !txt_imageurl.isEnabled();
-                txt_imageurl.setEnabled(b);
-                if(b)
+                Boolean imageUrlEnabled = !txt_imageurl.isEnabled();
+                txt_imageurl.setEnabled(imageUrlEnabled);
+                if(imageUrlEnabled)
                 {
                     btn_imageurl.setText("Delete image url");
 
@@ -296,9 +300,9 @@ public class AddCustomActivity extends AppCompatActivity {
         btn_malid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Boolean b = !txt_malid.isEnabled();
-                txt_malid.setEnabled(b);
-                if(b)
+                Boolean malIdEnabled = !txt_malid.isEnabled();
+                txt_malid.setEnabled(malIdEnabled);
+                if(malIdEnabled)
                 {
                     btn_malid.setText("Delete MyAnimeList ID");
 
@@ -313,9 +317,9 @@ public class AddCustomActivity extends AppCompatActivity {
         btn_maltype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Boolean b = !spn_maltype.isEnabled();
-                spn_maltype.setEnabled(b);
-                if(b)
+                Boolean malTypeEnabled = !spn_maltype.isEnabled();
+                spn_maltype.setEnabled(malTypeEnabled);
+                if(malTypeEnabled)
                 {
                     btn_maltype.setText("Delete MyAnimeList type");
 
@@ -327,7 +331,7 @@ public class AddCustomActivity extends AppCompatActivity {
             }
         });
 
-
+        //Back to the CustomListActivity
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -337,6 +341,7 @@ public class AddCustomActivity extends AppCompatActivity {
             }
         });
 
+        //Delete the current question
         btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -348,9 +353,7 @@ public class AddCustomActivity extends AppCompatActivity {
         });
 
 
-
-
-
+        //Submit the current question
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

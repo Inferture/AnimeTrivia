@@ -11,13 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
+/*Activity that shows the questions in the solo mode*/
 public class SoloQuestionActivity extends AppCompatActivity {
-    /*Activity that shows the questions in the solo mode*/
+
 
     String realAnswer="D.D.D.";
 
@@ -38,16 +37,19 @@ public class SoloQuestionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
 
-
+        //Theme
         int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
         setTheme(theme);
 
+        //Number of questions
         maxQuestion = sharedPref.getInt(getString(R.string.questions_number), 10);
 
         Bundle extras = getIntent().getExtras();
 
+        //Parameters
         if(extras!=null)
         {
             score = extras.getInt("score", 0);
@@ -68,6 +70,7 @@ public class SoloQuestionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_solo);
 
+        //Layout elements
         loading = findViewById(R.id.im_loading);
         loading.setVisibility(View.INVISIBLE);
         question = findViewById(R.id.question);
@@ -82,6 +85,8 @@ public class SoloQuestionActivity extends AppCompatActivity {
 
         scoreText.setText("Score: " + score);
         numeroText.setText("Question " + numQuestion +"/" + maxQuestion);
+
+        //Buttons used to give an answer
 
         answer1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,12 +156,14 @@ public class SoloQuestionActivity extends AppCompatActivity {
                 }
             }
         });
+
         NextQuestion();
 
 
 
     }
 
+    //Show the true answer and the anwer given in the AnswerActivity
     protected  void ShowAnswer(String answerGiven, boolean right)
     {
         Intent party = new Intent(getApplicationContext(), SoloAnswerActivity.class);
@@ -181,6 +188,8 @@ public class SoloQuestionActivity extends AppCompatActivity {
         startActivity(party);
     }
 
+    //Gets to the next question if there is still at least a question left
+    //or gets to the results
     protected  void NextQuestion()
     {
 
@@ -232,6 +241,8 @@ public class SoloQuestionActivity extends AppCompatActivity {
 
     }
 
+    /*Loads a question in the layout*/
+
     protected  void LoadQuestion(String question, String rightAnswer, String falseAnswer1, String falseAnswer2, String falseAnswer3, int questionid)
     {
         id=questionid;
@@ -273,9 +284,7 @@ public class SoloQuestionActivity extends AppCompatActivity {
             answer4.setVisibility(View.VISIBLE);
         }
 
-
-
-
+        //answers are shown in a random order
         String[] answers = Permute(ans);
 
         Button[] buzzers={answer1, answer2,answer3,answer4};
@@ -284,11 +293,10 @@ public class SoloQuestionActivity extends AppCompatActivity {
             buzzers[i].setText(answers[i]);
         }
 
-
-
-
     }
 
+    //Randomizes the order of elements in tab
+    //Used to give the propositions in a random order
     protected <T> T[] Permute(T[] tab)
     {
         T[] newTab = tab.clone();
@@ -304,15 +312,4 @@ public class SoloQuestionActivity extends AppCompatActivity {
         return newTab;
     }
 
-    protected  <T> T[] DropNull(T[] tab)
-    {
-        List<T> newList = new ArrayList<T>();
-
-        for(int i=0;i<tab.length;i++)
-        {
-            newList.add(tab[i]);
-        }
-
-        return (T[])newList.toArray();
-    }
 }

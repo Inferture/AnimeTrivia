@@ -35,13 +35,15 @@ public class DuoAnswerActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        //Theme
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
         int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
         setTheme(theme);
 
+
         setContentView(R.layout.activity_answer_duo);
 
-
+        //Layout elements
         final Button okayJ1 = findViewById(R.id.btn_okay_j1);
         final Button okayJ2 = findViewById(R.id.btn_okay_j2);
 
@@ -61,12 +63,14 @@ public class DuoAnswerActivity extends AppCompatActivity {
         loadingJ2 = findViewById(R.id.im_searching_j2);
 
 
+        //Data from the question, answer and proposition
         Bundle extras = getIntent().getExtras();
         String q = extras.getString("question");
         String a = extras.getString("answer");
         String p1 = extras.getString("propositionJ1");
         String p2 = extras.getString("propositionJ2");
 
+        //1: player one wins;2:player 2 wins; else: they were both wrong
         int winner = extras.getInt("winner");
 
         scoreJ1=extras.getInt("scorej1");
@@ -74,12 +78,14 @@ public class DuoAnswerActivity extends AppCompatActivity {
 
         numQuestion=extras.getInt("num");
 
+        //If it was a custom question, we get the id of the question in the custom database
         //custom
         final int id = extras.getInt("questionid",-1);
         final Boolean custom = extras.getBoolean("custom");
         //\custom
 
 
+        //We set the layout elements values
         ansJ1.setText("Answer:\n" + a);
         ansJ2.setText("Answer:\n" + a);
         questionJ1.setText(q);
@@ -102,7 +108,7 @@ public class DuoAnswerActivity extends AppCompatActivity {
             propositionJ2.setText("");
         }
 
-
+        //Set the color to indicate weather the answer was right or not
         if(winner==1)
         {
             propositionJ1.setTextColor(Color.GREEN);
@@ -130,7 +136,7 @@ public class DuoAnswerActivity extends AppCompatActivity {
         imageJ1.setVisibility(View.INVISIBLE);
         imageJ2.setVisibility(View.INVISIBLE);
 
-
+        //We look for the image that corresponds to the question
         if(custom)
         {
             cis.qdh=new QuestionDbHelper(getApplicationContext());
@@ -140,6 +146,9 @@ public class DuoAnswerActivity extends AppCompatActivity {
         {
             is.execute(q, a);
         }
+
+        /*We only go to the next question once both player indicate they are ready*/
+
         okayJ1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,9 +206,9 @@ public class DuoAnswerActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
+
+    /*Once the image was downloaded, we set it on the appropriate layout elements*/
 
     public void LoadImage(Bitmap bm, final int type, final int malid)//, int malid puis set onclick
     {
@@ -250,14 +259,10 @@ public class DuoAnswerActivity extends AppCompatActivity {
 
 
         LoadImage(bm);
-
-
     }
 
     public void LoadImage(Bitmap bm)
     {
-
-
         try
         {
             imageJ1.setImageBitmap(bm);

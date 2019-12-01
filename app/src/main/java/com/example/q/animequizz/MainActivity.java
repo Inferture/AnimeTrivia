@@ -5,30 +5,25 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.hardware.SensorEventListener;
 import android.provider.BaseColumns;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AndroidException;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Random;
 
+/*Activity opened at the start, shows the various options*/
 public class MainActivity extends AppCompatActivity  {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    /*Activity opened at the start, shows the various options*/
+
         super.onCreate(savedInstanceState);
 
+        //Theme
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
         int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
         setTheme(theme);
@@ -36,6 +31,7 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_menu);
 
 
+        //Layout elements
         Button play = findViewById(R.id.btn_play);
         Button playcustom = findViewById(R.id.btn_playcustom);
         Button make = findViewById(R.id.btn_make);
@@ -43,6 +39,7 @@ public class MainActivity extends AppCompatActivity  {
         Button credits = findViewById(R.id.btn_credits);
 
 
+        //To the activity to choose the game mode (classic, with the online database)
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +48,8 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-
+        //To the activity to choose the game mode (custom, with the custom questions)
+        //Only works if at least one question was created
         playcustom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +88,7 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
-
+        //To the custom question activity (to make or modify custom questions)
         make.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,6 +98,7 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+        //To the option activity (to modify the theme, the preferred number of questions...)
         options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +107,7 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+        //To the credits
         credits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

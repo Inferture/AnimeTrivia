@@ -16,8 +16,9 @@ import android.widget.TextView;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class SoloAnswerActivity extends AppCompatActivity {
 /*Activity that shows the answers in the solo mode*/
+public class SoloAnswerActivity extends AppCompatActivity {
+
 
     ImageView image;
     GifImageView loading;
@@ -29,12 +30,14 @@ public class SoloAnswerActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        //Theme
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("ANIME_QUIZZ_PREF", Context.MODE_PRIVATE);
         int theme =sharedPref.getInt(getString(R.string.theme), R.style.AppTheme_LightTheme);
         setTheme(theme);
 
         setContentView(R.layout.activity_answer);
 
+        //Layout elements
         Button title = findViewById(R.id.btn_qtitlemenu);
         Button next = findViewById(R.id.btn_next);
         TextView ans = findViewById(R.id.answer);
@@ -43,16 +46,18 @@ public class SoloAnswerActivity extends AppCompatActivity {
         image = findViewById(R.id.im_answer);
         loading = findViewById(R.id.im_searching);
 
+        //Parameters
         Bundle extras = getIntent().getExtras();
         String q = extras.getString("question");
         String a = extras.getString("answer");
         String p = extras.getString("proposition");
-        Boolean b = extras.getBoolean("right");
+        Boolean right = extras.getBoolean("right");//Is the proposition right ?
 
-        //custom
+        //custom: if it's a custom game, id is the id of the question in the custom database
         final int id = extras.getInt("questionid",-1);
         final Boolean custom = extras.getBoolean("custom");
         //\custom
+        //current score and question number
         score=extras.getInt("score");
         numQuestion=extras.getInt("num");
 
@@ -61,8 +66,8 @@ public class SoloAnswerActivity extends AppCompatActivity {
         proposition.setText("Your answer: " + p);
 
 
-
-        if(b)
+        //Color changes to indicate if the player was right
+        if(right)
         {
             proposition.setTextColor(Color.GREEN);
         }
@@ -77,7 +82,8 @@ public class SoloAnswerActivity extends AppCompatActivity {
         loading.setVisibility(View.VISIBLE);
         image.setVisibility(View.INVISIBLE);
 
-        //custom
+        //Searches the image, with CustomImageSearch if it's a custom game,
+        // or with ImageSearch
         if(custom)
         {
             cis.qdh=new QuestionDbHelper(getApplicationContext());
@@ -87,8 +93,8 @@ public class SoloAnswerActivity extends AppCompatActivity {
         {
             is.execute(q, a);
         }
-        //\custom
 
+        //Get to the next question
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,6 +113,7 @@ public class SoloAnswerActivity extends AppCompatActivity {
 
             }
         });
+        //Back to the title (main Activity)
         title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,6 +124,8 @@ public class SoloAnswerActivity extends AppCompatActivity {
         });
 
     }
+
+    /*Loads an image in the layout*/
 
     public void LoadImage(Bitmap bm, final int type, final int malid)
     {

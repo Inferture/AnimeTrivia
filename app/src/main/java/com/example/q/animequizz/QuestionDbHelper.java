@@ -6,15 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-public class QuestionDbHelper extends SQLiteOpenHelper {
 /*Helper to make it easier to do operations on the database (add/change/delete entry, create a table...)*/
+public class QuestionDbHelper extends SQLiteOpenHelper {
+
     private static final String SQL_CREATE_ENTRIES = AnimeContract.SQL_CREATE_ENTRIES;
-
-
     private static final String SQL_DELETE_ENTRIES =AnimeContract.SQL_DELETE_ENTRIES;
 
     // If you change the database schema, you must increment the database version.
-
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "AnimeQuizz.db";
 
@@ -32,7 +30,7 @@ public class QuestionDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-
+    //Finds an available id and adds a question with the given parameters and the new id and returns the id
     public static long AddQuestion(SQLiteDatabase db, String question, String rightanswer, String falseanswer1, String falseanswer2, String falseanswer3, String imageurl, String subject, int type, int malid)
     {
         ContentValues values = new ContentValues();
@@ -74,6 +72,7 @@ public class QuestionDbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
+    //Changes the question with the id id with the given arguments
     public static long ChangeQuestion(SQLiteDatabase db, long id, String question, String rightanswer, String falseanswer1, String falseanswer2, String falseanswer3, String imageurl, String subject, int type, int malid)
     {
 
@@ -144,6 +143,8 @@ public class QuestionDbHelper extends SQLiteOpenHelper {
 
     }
 
+    //Deletes the question with the id id and returns the number of questions deleted.
+    //Should return 1 because 2 questions should not have the same id.
     public static long DeleteQuestion(SQLiteDatabase db, long id)
     {
         String selection = BaseColumns._ID +  " = ?";
@@ -154,7 +155,6 @@ public class QuestionDbHelper extends SQLiteOpenHelper {
                 selection,
                 selectionArgs
         );
-
 
         return count;
 

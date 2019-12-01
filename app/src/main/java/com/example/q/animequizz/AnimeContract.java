@@ -2,8 +2,8 @@ package com.example.q.animequizz;
 import android.provider.BaseColumns;
 
 
+/*To make SQL queries in a simpler way*/
 public class AnimeContract {
-    /*To make SQL queries easier to make*/
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + QuestionEntry.TABLE_NAME + " (" +
                     QuestionEntry._ID + " INTEGER PRIMARY KEY," +
@@ -21,7 +21,7 @@ public class AnimeContract {
             "DROP TABLE IF EXISTS " + QuestionEntry.TABLE_NAME;
 
     // To prevent someone from accidentally instantiating the contract class,
-    // make the constructor private.
+    // the constructor is made private.
     private AnimeContract() {}
 
     /* Inner class that defines the table contents */

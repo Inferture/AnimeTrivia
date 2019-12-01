@@ -2,8 +2,6 @@ package com.example.q.animequizz;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,8 +15,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Random;
 
+/*Searches asynchronously for questions  in the normal mode (with questions from the online Open Trivia Database accessed to with a json API)*/
 public class QuestionSearch extends AsyncTask<String, String, JSONObject> {
-    /*Searches asynchronously for questions  in the normal mode (with questions from the online Open Trivia Database accessed to with a json API)*/
+
 
     SoloQuestionActivity act;
 
@@ -38,7 +37,7 @@ public class QuestionSearch extends AsyncTask<String, String, JSONObject> {
         mode=1;
     }
 
-
+    //Searches asynchronously for a question
     protected JSONObject doInBackground(String... strings)  {
 
 
@@ -63,12 +62,8 @@ public class QuestionSearch extends AsyncTask<String, String, JSONObject> {
             {
                 Log.i("AnimeQuizz", "AnimeStuff: Mistake happened: " + e.toString());
             }
-
-
-            //
-
             Log.i("AnimeQuizz", "AnimeStuff:" + jsonAnswer);
-            //
+
             return new JSONObject(jsonAnswer);
 
         }
@@ -94,6 +89,8 @@ public class QuestionSearch extends AsyncTask<String, String, JSONObject> {
 
     }
 
+    //Checks the json object of a question and gets all the values in variables to
+    // put in a Question activity
     @Override
     protected void onPostExecute(JSONObject json) {
 
@@ -158,6 +155,7 @@ public class QuestionSearch extends AsyncTask<String, String, JSONObject> {
 
     }
 
+    //Formats sting to avoid unreadable characters in questions
     protected String FormatString(String s)
     {
         try
@@ -176,7 +174,7 @@ public class QuestionSearch extends AsyncTask<String, String, JSONObject> {
     }
 
 
-    /*Reads an InputStream and returns the string*/
+    //Reads an InputStream and returns the string
     String readStream(InputStream stream) throws IOException
     {
 

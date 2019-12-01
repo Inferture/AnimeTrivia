@@ -1,36 +1,29 @@
 package com.example.q.animequizz;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 
-
-public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
 /*To load an image asynchronously into an answer activity*/
+public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
 
 
 
     SoloAnswerActivity act;
     DuoAnswerActivity actDuo;
+
+    //Mode: 0 for solo; 1 for duo
     int mode=0;
+    //Mediatype:1:Anime ; 2:Manga ; 3:Character
     int mediatype=-1;
+    //MyAnimeList id
     int malid=-1;
 
     public BitmapDownloader(SoloAnswerActivity act, int type, int malid)
@@ -62,6 +55,7 @@ public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
         mode=1;
     }
 
+    //Downloads the image asynchronously
     protected Bitmap doInBackground(String... strings)
     {
         URL url=null;
@@ -105,10 +99,7 @@ public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
             Log.i("Anime", "Pomme1: when dling bitmap "+e.toString());
         }
 
-
-
         return bm;
-
     }
 
 
@@ -122,6 +113,7 @@ public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
     }
 
 
+    //Loads the image in the appropriate acrivity
     @Override
     protected void onPostExecute(Bitmap bitmap) {
 
@@ -151,8 +143,6 @@ public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
             }
         }
 
-
     }
-
 
 }
