@@ -13,7 +13,9 @@ any (you can also change the theme manually)
 ## What works now:
 
 Play in solo or in split screen duo on some anime trivia questions from the open trivia database
+
 Make your own questions
+
 Play on your own questions
 
 You can also check the anime from which a question is from on myanimelist, though the database of
@@ -25,6 +27,7 @@ It still works fairly well from experience.
 ## Ideas for improvment:
 
 Bluetooth multiplayer (maybe even more that 2 players)
+
 Bluetooth question sharing
 
 
