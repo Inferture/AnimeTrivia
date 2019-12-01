@@ -226,9 +226,6 @@ public class ImageSearch extends AsyncTask<String, String, JSONObject[]> {
                 {
                     Log.i("AnimeQuizz", "AnimeStuff:ImageSearch Mistake happened on post execution: " + e.toString());
                 }
-
-
-
         }
 
 
