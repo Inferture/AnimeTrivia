@@ -2,7 +2,7 @@
 
 ## General
 
-<img src="\app\src\main\res\drawable"  width="501" height="292"/>
+![](./app/src/main/res/drawable/AnimeTrivia.gif)
 
 Project made during the course "Mobile development Android" in Telecom SudParis. [(Releases)](https://github.com/Inferture/AnimeQuizz/releases)
 
