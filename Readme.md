@@ -2,6 +2,8 @@
 
 ## General
 
+<img src="\app\src\main\res\drawable"  width="501" height="292"/>
+
 Project made during the course "Mobile development Android" in Telecom SudParis. [(Releases)](https://github.com/Inferture/AnimeQuizz/releases)
 
 Should work on Android 4.4 or higher
